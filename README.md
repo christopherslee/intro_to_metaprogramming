@@ -106,7 +106,9 @@ Example:
     > customer.age
     Age: 48
 
-You'll know when you are finished when all your tests are green!
+You'll know when you are finished when all your tests are green! I know
+that it's a little bit whacky to check if the datatype is a string, but
+just pretend that you need to check it for the purposes of the workshop.
 
 *Note:* This isn't metaprogramming, but you may have written boilerplate
  getters and setters like this before.
@@ -117,14 +119,14 @@ Lesson 2: Dynamic Dispatch
 Great, we finished Lesson 1, which was mostly just making sure you're
 all setup properly for the real lessons. You probably are also slightly
 peeved at the reptitive nature of the code in the ``Customer`` class.
-Good!
+Good! That was part of the point!
 
 Sending Messages Programatically
 --------------------------------
 
-You may recall that invoking methods in Ruby sends messages to objects to query and
-manipulate them. Convenientely ``Object`` has a ``send`` method we can
-use to send a message dynamically at runtime.
+You may recall that invoking methods in Ruby sends messages to objects to
+query and manipulate them. Convenientely ``Object`` has a ``send`` method
+we can use to send a message dynamically at runtime.
 
     class Echo
       def message(str)
@@ -202,7 +204,7 @@ the getter methods we deleted.
 
 You'll know when to stop when your tests are all green.
 
-*Hints:* The interpretter reads top down. Also thinking about where
+*Hints:* The interpretter reads top down. Also thinking about when and where
  ``has_field`` is invoked may help you avoid an ``undefined method``
 error.
 
@@ -215,7 +217,7 @@ created methods based on the functionality the datasource provides us? We can!
 
 Fire up your favorite ruby interpreter (irb/pry). Try out the following:
 
-    > require '.lib/customer'
+    > require './lib/customer'
     > Customer.methods
     > Customer.methods(false)
     > Customer.public_methods
@@ -224,7 +226,9 @@ Fire up your favorite ruby interpreter (irb/pry). Try out the following:
 
 There are many methods for introspecting Ruby classes. They can be very
 useful when debugging strange problems. In our case, we want to use them
-to interrogate our datasource.
+to interrogate our datasource. To learn more about then, look at the
+``Object`` and ``Basic Object`` classes in the [Ruby API
+docs](http://ruby-doc.org/core-2.0/).
 
 Problem 4
 ---------
@@ -233,18 +237,16 @@ Change the ``Customer`` class to introspect the datasource upon
 initialization and dynamically define our fields.
 
 *Hint:* You can use the ``grep`` method to get the methods you want.
-Highlight the text below to get a useful regex. This isn't a
- class on regular expressions, but it's still fun to try to work through
-it yourself.
+Visit the gist below to get a useful regex if you don't want to write
+one yourself. This isn't a class on regular expressions, but can still
+be fun to try to work through it yourself.
 
-<div style="color: #FFF">
-  @datasource.methods.grep(/^get_(.*)_value/) { Customer.has_field $1 }
-</div>
+[View gist](https://gist.github.com/christopherslee/5521968)
 
 Lesson 5: Ghost Methods
 =======================
 
-Very cool! Our customer class is getting shorter and shorter. Try that
+Very cool! Our customer class is getting shorter and shorter. Try doing that
 in Java!
 
 Method Missing
