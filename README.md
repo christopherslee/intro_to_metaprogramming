@@ -266,7 +266,7 @@ purposes by redefining it in our class. It takes two arguments, the
 method name, and a splat.
 
     class Customer
-      def method_missing(name, *args)
+      def method_missing(name, *args, &block)
         super
       end
     end
