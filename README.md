@@ -193,6 +193,8 @@ code we give it like so:
     > puts post.state
     error
 
+Ruby 1.9.3 also added a ``define_singleton_method`` which defines methods on the eigenclass.
+
 Problem 3
 ---------
 
