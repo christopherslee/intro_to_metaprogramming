@@ -339,7 +339,7 @@ answers to the problems:
 About the Author
 ================
 
-Christopher Lee is a Principle Software Engineer at Technical Team Lead
+Christopher Lee is a Principal Software Engineer at Technical Team Lead
 at ConstantContact. He was the CTO and co-founder (is the CTO of a 2
 person startup _really_ a CTO?) of MobManager.com, which was acquired by
 Constant Contact in 2011. He leads the Ruby/Rails best practice group at
