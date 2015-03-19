@@ -32,9 +32,9 @@ Setup
 Requirements
 ------------
 
-The workshop was created with Ruby 1.9.3, but should work with most ruby
-versions. There's an assumption that you have at least a basic
-understanding of Ruby programming.
+The workshop was created with Ruby 1.9.3, but works through version 2.1.2.
+There's an assumption that you have at least a basic understanding
+of Ruby programming.
 
 Clone the git repo:
 
