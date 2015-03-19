@@ -68,13 +68,11 @@ Lesson 1: Plain old Ruby
 ========================
 
 Our workshop will start with developing a ruby class ``Customer``
-that interacts with our very own 'NoSQL' database. Our
+that interacts with our very own special, read-only, in-memory database. Our
 ``CustomerDatastore`` contains customer data for fields 'first', 'last',
 'email', and 'age'. For each of these fields there is a matching method
 to query for the value and the datatype, (ex: ``get_email_value``,
 ``get_email_datatype``)
-
-Our datastore is readonly for this workshop.
 
 To help guide us along, there is a set of specs that we want to make
 pass. When they go green, we know we have completed the lesson. To test
@@ -86,6 +84,21 @@ of the project.
 
 *Note:* ideally, you don't have to understand rspec too much to get
 through this workshop.
+
+About the project
+-----------------
+
+```
++ lib/
+  - customer.rb                   # your code goes here
+  - customer_datasource.rb        # an imaginary database
++ spec/
+  - customer_datasource_spec.rb   # customer datasource tests
+  - customer_spec.rb              # customer tests
+- Gemfile
+- Gemfile.lock
+- README.md                       # this file
+```
 
 Problem 1
 ---------
@@ -107,7 +120,7 @@ Example:
     Age: 48
 
 You'll know when you are finished when all your tests are green! I know
-that it's a little bit whacky to check if the datatype is a string, but
+that it's a little bit wacky to check if the datatype is a string, but
 just pretend that you need to check it for the purposes of the workshop.
 
 *Note:* This isn't metaprogramming, but you may have written boilerplate
@@ -339,15 +352,15 @@ answers to the problems:
 About the Author
 ================
 
-Christopher Lee is a Principle Software Engineer at Technical Team Lead
-at ConstantContact. He was the CTO and co-founder (is the CTO of a 2
+I am currently a Lead Engineer at Jana Mobile.  I was formerly a Team Lead
+at ConstantContact, where I also lead the Ruby on Rails best practice
+group. I was the CTO and co-founder (is the CTO of a 2
 person startup _really_ a CTO?) of MobManager.com, which was acquired by
-Constant Contact in 2011. He leads the Ruby/Rails best practice group at
-ConstantContact.
+Constant Contact in 2011.
 
-He has a B.S. Computer Science from the University of Illinois at
+I have a B.S. Computer Science from the University of Illinois at
 Urbana-Champaign, an M.S. Software Engineering w/distinction from DePaul
-University, and is an alumnus of Northwestern's Kellogg School of
+University, and am an alumnus of Northwestern's Kellogg School of
 Management.
 
 As a personal note, I used Rails quite successfully for at least 6 years
@@ -361,4 +374,3 @@ not a professional trainer or instructor, but I would value your
 feedback on how I could improve my delivery, or the material itself.
 
 Email Me: christopher (dot) s (dot) lee (at) gmail (dot) com
-
