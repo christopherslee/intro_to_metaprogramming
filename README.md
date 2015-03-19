@@ -206,6 +206,8 @@ code we give it like so:
     > puts post.state
     error
 
+Ruby 1.9.3 also added a ``define_singleton_method`` which defines methods on the eigenclass.
+
 Problem 3
 ---------
 
@@ -354,8 +356,7 @@ About the Author
 
 I am currently a Lead Engineer at Jana Mobile.  I was formerly a Team Lead
 at ConstantContact, where I also lead the Ruby on Rails best practice
-group. I was the CTO and co-founder (is the CTO of a 2
-person startup _really_ a CTO?) of MobManager.com, which was acquired by
+group. I was the CTO and co-founder of MobManager.com, which was acquired by
 Constant Contact in 2011.
 
 I have a B.S. Computer Science from the University of Illinois at
