@@ -14,19 +14,19 @@ describe Customer do
 
   describe "#first" do
     it "gets the first name of a customer" do
-      customer.first.should == "First: 'Yukihiro'"
+      customer.first.should == "First: Yukihiro"
     end
   end
 
   describe "#last" do
     it "gets the last name of a customer" do
-      customer.last.should == "Last: 'Matsumoto'"
+      customer.last.should == "Last: Matsumoto"
     end
   end
 
   describe "#email" do
     it "gets the email address of a customer" do
-      customer.email.should == "Email: 'matz@bostonrb.org'"
+      customer.email.should == "Email: matz@bostonrb.org"
     end
   end
 

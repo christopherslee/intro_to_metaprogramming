@@ -114,14 +114,13 @@ is a string, it encloses the value in single quotes.
 Example:
 
     > customer.first
-    First: 'Yokohiro'
+    First: Yokohiro
 
     > customer.age
     Age: 48
 
-You'll know when you are finished when all your tests are green! I know
-that it's a little bit wacky to check if the datatype is a string, but
-just pretend that you need to check it for the purposes of the workshop.
+You'll know when you are finished when all your tests are green!
+
 
 *Note:* This isn't metaprogramming, but you may have written boilerplate
  getters and setters like this before.
@@ -130,8 +129,8 @@ Lesson 2: Dynamic Dispatch
 ==========================
 
 Great, we finished Lesson 1, which was mostly just making sure you're
-all setup properly for the real lessons. You probably are also slightly
-peeved at the reptitive nature of the code in the ``Customer`` class.
+all setup properly for the next lessons. You probably are also slightly
+peeved at the repetitive nature of the code in the ``Customer`` class.
 Good! That was part of the point!
 
 Sending Messages Programatically
@@ -156,16 +155,31 @@ after all, the author must have made the private for some reason, right?
 In Ruby 1.9.1 and above, there is a ``public_send`` method that
 appropriately respects private methods.
 
+Try it out using `Send` in irb!
+
 Problem 2
 ---------
 
-Let's DRY up our ``Customer`` class by using ``send``. Define a method
+Let's DRY up our ``Customer`` class by using ``send``. Define a private helper method
 ``field`` that takes a single argument ``fieldname``. Use this fieldname to
-dynamically get the value and datatype, returning the appropriate result.
-As your refactor, your tests should still be green!
+dynamically get the value, returning the appropriate result.  As your refactor,
+your tests should still be green!
 
-*Hint:* The first arguement to ``send`` is just a string. How can you
- use a string to dynamically determine where to send your message?
+```
+def first
+  field :first
+end
+
+# refactor your other methods
+
+private
+
+def field(fieldname)
+  value = ? # use send to "send messages" to the datasource
+
+  # now finish up, keeping your tests green!
+end
+```
 
 Lesson 3: Code that writes Code
 ===============================
@@ -217,48 +231,23 @@ create ourselves a handy ``has_field`` method (Does this start to remind you
 of anything in Rails?) This method will use ``define_method`` to replace
 the getter methods we deleted.
 
+```
+def self.has_field(fieldname)
+  define_method fieldname do
+    # your code here
+  end
+end
+
+# now use your has_field method to "write" your new methods without writing them.
+```
+
 You'll know when to stop when your tests are all green.
 
-*Hints:* The interpretter reads top down. Also thinking about when and where
+*Hints:* The ruby interpreter reads top down. Also thinking about when and where
  ``has_field`` is invoked may help you avoid an ``undefined method``
 error.
 
-Lesson 4: Interrogating Ruby
-============================
-
-Now we have code that writes code, and that's pretty cool. Our
-schemaless datasource could change; wouldn't it be cooler if we automatically
-created methods based on the functionality the datasource provides us? We can!
-
-Fire up your favorite ruby interpreter (irb/pry). Try out the following:
-
-    > require './lib/customer'
-    > Customer.methods
-    > Customer.methods(false)
-    > Customer.public_methods
-    > Customer.public_methods(false)
-    > Customer.ancestors
-
-There are many methods for introspecting Ruby classes. They can be very
-useful when debugging strange problems. In our case, we want to use them
-to interrogate our datasource. To learn more about then, look at the
-``Object`` and ``Basic Object`` classes in the [Ruby API
-docs](http://ruby-doc.org/core-2.0/).
-
-Problem 4
----------
-
-Change the ``Customer`` class to introspect the datasource upon
-initialization and dynamically define our fields.
-
-*Hint:* You can use the ``grep`` method to get the methods you want.
-Visit the gist below to get a useful regex if you don't want to write
-one yourself. This isn't a class on regular expressions, but can still
-be fun to try to work through it yourself.
-
-[View gist](https://gist.github.com/christopherslee/5521968)
-
-Lesson 5: Ghost Methods
+Lesson 4: Ghost Methods
 =======================
 
 Very cool! Our customer class is getting shorter and shorter. Try doing that
@@ -290,7 +279,7 @@ Two things to watch out for here. You generally want to invoke the
 default behavior of ``method_missing`` somewhere to get the standard
 behavior. You also want to be careful not to get into an infinite loop!
 
-Problem 5
+Problem 4
 ---------
 
 Refactor your ``Customer`` class to use ``method_missing`` instead of
@@ -300,11 +289,20 @@ Refactor your ``Customer`` class to use ``method_missing`` instead of
  ``respond_to?`` to make sure we don't inundate our datasource with
 bogus messages.
 
-Lesson 6: Now your methods are not really methods
+```ruby
+def method_missing(methodname, *args, &block)
+  super unless datasource.respond_to? "<your string here>"
+  value = datasource.send("get_#{methodname}_value", id)
+  "#{methodname.capitalize}: #{value}"
+end
+```
+
+Lesson 5: Now your methods are not really methods
 =================================================
 
-Maybe we've gotten a little too clever for our own good. Open up irb or
-pry and take a look at your ``Customer`` class.
+Maybe we've gotten a little too clever for our own good. Search your repo for "age".
+
+Then open up irb or pry and take a look at your ``Customer`` class.
 
     > require './lib/customer'
     > require './lib/customer_datasource'
@@ -317,7 +315,7 @@ though we can invoke our component methods dynamically, they aren't
 available for introspection. This is a tradeoff we have to keep in mind
 when using ``method_missing``, although we could override ``respond_to?`` as well.
 
-Problem 6
+Problem 5
 ---------
 
 Override ``respond_to?`` to return the methods that ``method_missing``
@@ -326,6 +324,42 @@ handles for us.
 *Hint:* Just like ``method_missing`` we probably want to invoke the
  default behavior with a call to ``super`` if we don't match the case we
 are specifically adding.
+
+Extra Credit: Interrogating Ruby
+============================
+
+Now we have code that writes code, and that's pretty cool. Our
+schemaless datasource could change; wouldn't it be cooler if we automatically
+created methods based on the functionality the datasource provides us? We can!
+
+Fire up your favorite ruby interpreter (irb/pry). Try out the following:
+
+    > require './lib/customer'
+    > Customer.methods
+    > Customer.methods(false)
+    > Customer.public_methods
+    > Customer.public_methods(false)
+    > Customer.ancestors
+
+There are many methods for introspecting Ruby classes. They can be very
+useful when debugging strange problems. In our case, we want to use them
+to interrogate our datasource. To learn more about then, look at the
+``Object`` and ``Basic Object`` classes in the [Ruby API
+docs](http://ruby-doc.org/core-2.0/).
+
+Extra Credit Problem
+---------
+
+Change the ``Customer`` class to introspect the datasource upon
+initialization and dynamically define our fields.
+
+*Hint:* You can use the ``grep`` method to get the methods you want.
+Visit the gist below to get a useful regex if you don't want to write
+one yourself. This isn't a class on regular expressions, but can still
+be fun to try to work through it yourself.
+
+[View gist](https://gist.github.com/christopherslee/5521968)
+
 
 Conclusion
 ==========
@@ -337,6 +371,8 @@ these examples? Maybe you can identify places in your code that you can
 DRY up with these techniques, maybe you will create the replacement
 ActiveRecord.
 
+Before you do so, what kind of security issues can you think of?
+
 Sample Answers
 --------------
 
@@ -347,9 +383,8 @@ answers to the problems:
 * [Problem 1](https://gist.github.com/christopherslee/5521596)
 * [Problem 2](https://gist.github.com/christopherslee/5521664)
 * [Problem 3](https://gist.github.com/christopherslee/5521697)
-* [Problem 4](https://gist.github.com/christopherslee/5521757)
-* [Problem 5](https://gist.github.com/christopherslee/5521810)
-* [Problem 6](https://gist.github.com/christopherslee/5521813)
+* [Problem 4](https://gist.github.com/christopherslee/5521810)
+* [Problem 5](https://gist.github.com/christopherslee/5521813)
 
 About the Author
 ================
